@@ -1,0 +1,70 @@
+{
+  "builder_name": "json",
+  "citation": "",
+  "config_name": "default",
+  "dataset_name": "babi",
+  "dataset_size": 13674116,
+  "description": "",
+  "download_checksums": {
+    "hf://datasets/Muennighoff/babi@731c7916c8ae4bfb1d24889294bab78cdeb170ed/babi_train.jsonl": {
+      "num_bytes": 6996625,
+      "checksum": null
+    },
+    "hf://datasets/Muennighoff/babi@731c7916c8ae4bfb1d24889294bab78cdeb170ed/babi_valid.jsonl": {
+      "num_bytes": 769568,
+      "checksum": null
+    },
+    "hf://datasets/Muennighoff/babi@731c7916c8ae4bfb1d24889294bab78cdeb170ed/babi_test.jsonl": {
+      "num_bytes": 7791502,
+      "checksum": null
+    }
+  },
+  "download_size": 15557695,
+  "features": {
+    "passage": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "question": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "answer": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "task": {
+      "dtype": "int64",
+      "_type": "Value"
+    }
+  },
+  "homepage": "",
+  "license": "",
+  "size_in_bytes": 29231811,
+  "splits": {
+    "train": {
+      "name": "train",
+      "num_bytes": 6148732,
+      "num_examples": 18013,
+      "dataset_name": "babi"
+    },
+    "validation": {
+      "name": "validation",
+      "num_bytes": 676109,
+      "num_examples": 1987,
+      "dataset_name": "babi"
+    },
+    "test": {
+      "name": "test",
+      "num_bytes": 6849275,
+      "num_examples": 20000,
+      "dataset_name": "babi"
+    }
+  },
+  "version": {
+    "version_str": "0.0.0",
+    "major": 0,
+    "minor": 0,
+    "patch": 0
+  }
+}

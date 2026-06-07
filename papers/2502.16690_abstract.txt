@@ -1,0 +1,39 @@
+From Text to Space: Mapping Abstract Spatial
+Models in LLMs during a Grid-World Navigation
+Task
+Nicolas Martorell1,2[0000−0003−1778−7738]
+1 Faculty of Exact and Natural Sciences, University of Buenos Aires, Argentina
+2 National Scientific and Technical Research Council (CONICET)
+nmartorell@fbmc.fcen.uba.ar
+https://exactas.uba.ar/
+Abstract. Understanding how large language models (LLMs) represent
+and reason about spatial information is crucial for building robust agen-
+tic systems that can navigate real and simulated environments. In this
+work, we investigate the influence of different text-based spatial repre-
+sentations on LLM performance and internal activations in a grid-world
+navigation task. By evaluating models of various sizes on a task that
+requires navigating toward a goal, we examine how the format used to
+encode spatial information impacts decision-making. Our experiments
+reveal that cartesian representations of space consistently yield higher
+success rates and path efficiency, with performance scaling markedly with
+model size. Moreover, probing LLaMA-3.1-8B revealed subsets of internal
+units—primarily located in intermediate layers—that robustly correlate
+with spatial features, such as the position of the agent in the grid or action
+correctness, regardless of how that information is represented, and are
+also activated by unrelated spatial reasoning tasks. This work advances
+our understanding of how LLMs process spatial information and provides
+valuable insights for developing more interpretable and robust agentic AI
+systems.
+Keywords: Spatial Navigation · LLM Agents · Abstract World Models
+1 Introduction
+Large language models (LLMs) have demonstrated impressive capabilities in
+processing and generating text [1,2], yet a critical question remains: do these
+models develop abstract internal representations of the world, or do they simply
+memorize typical reasoning paths? This debate is particularly heated in non-
+textual domains—such as spatial or perceptual tasks—where the models have
+only been exposed to such concepts indirectly through text [3–5]. While several
+studies have shown that LLMs can learn and solve tasks in these domains [6–8],
+and that their internal representations can be linearly mapped to those external
+structures [9], a clear understanding of how these internal models are composed
+and how they influence behavior is still lacking.
+arXiv:2502.16690v1  [cs.AI]  23 Feb 2025

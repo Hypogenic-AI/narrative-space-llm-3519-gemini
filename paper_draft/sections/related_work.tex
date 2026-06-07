@@ -1,0 +1,13 @@
+\section{Related Work}
+\label{sec:related}
+
+The study of spatial reasoning in LLMs has traditionally focused on two main areas: benchmark performance on reasoning tasks and the probing of internal representations for spatial knowledge.
+
+\para{Spatial Reasoning Benchmarks}
+Foundational work such as the \babi tasks \cite{weston2015towards} introduced simple pathfinding and spatial relation questions (e.g., Task 19). More recently, the \stepgame benchmark \cite{shi2022stepgame} was introduced to evaluate robust multi-hop spatial reasoning. While these benchmarks are effective at measuring the logical consistency and accuracy of LLMs, they typically use fixed, templated language for both prompts and answers. \citet{li2024advancing} highlighted that LLMs often struggle as the number of "hops" increases and proposed hybrid systems combining LLMs with symbolic reasoners to achieve higher accuracy. Our work differs by shifting the focus from reasoning success to the *generative linguistic style* used when models spontaneously describe spatial movement.
+
+\para{Internal Spatial Models}
+A parallel line of inquiry investigates whether LLMs develop abstract "mental maps" of their environments. \citet{martorell2025text} demonstrated that specific internal units in models like Llama-3 correlate with abstract spatial features, particularly when using Cartesian representations. Their work suggests that LLMs do maintain a form of internal spatial model. We build on this insight by examining how these internal models are externalized in natural language, specifically identifying the biases and constraints of the resulting "spatial grammar."
+
+\para{Linguistic Bias and RLHF Tone}
+Recent surveys have noted the emergence of a characteristic "RLHF tone" in instruction-tuned models, often described as overly polite, hedge-prone, and structurally repetitive \cite{zha2025survey}. While these patterns have been studied in general text generation, our study is the first to specifically identify how this training-induced bias influences the representation of physical space. By using \humanprompt conditions, we isolate the model's default "robotic" spatial grammar from its maximum expressive capacity.

@@ -1,0 +1,97 @@
+How to Enable LLM with 3D Capacity? A Survey of Spatial Reasoning in LLM
+Jirong Zha1∗ , Yuxuan Fan2∗ , Xiao Yang2 , Chen Gao1† , Xinlei Chen1†
+1Tsinghua University
+2The Hong Kong University of Science and Technology (Guang Zhou)
+zhajirong23@mails.tsinghua.edu.cn, {yfan546, xyang856}@connect.hkust-gz.edu.cn,
+chgao96@gmail.com, chen.xinlei@sz.tsinghua.edu.cn
+Abstract
+3D spatial understanding is essential in real-world
+applications such as robotics, autonomous vehicles,
+virtual reality, and medical imaging. Recently, Large
+Language Models (LLMs), having demonstrated
+remarkable success across various domains, have
+been leveraged to enhance 3D understanding tasks,
+showing potential to surpass traditional computer
+vision methods. In this survey, we present a com-
+prehensive review of methods integrating LLMs
+with 3D spatial understanding. We propose a tax-
+onomy that categorizes existing methods into three
+branches: image-based methods deriving 3D un-
+derstanding from 2D visual data, point cloud-based
+methods working directly with 3D representations,
+and hybrid modality-based methods combining mul-
+tiple data streams. We systematically review rep-
+resentative methods along these categories, cover-
+ing data representations, architectural modifications,
+and training strategies that bridge textual and 3D
+modalities. Finally, we discuss current limitations,
+including dataset scarcity and computational chal-
+lenges, while highlighting promising research direc-
+tions in spatial perception, multi-modal fusion, and
+real-world applications.
+1 Introduction
+Large Language Models (LLMs) have evolved from basic
+neural networks to advanced transformer models like BERT
+[Kenton and Toutanova, 2019] and GPT [Radford, 2018], orig-
+inally excelling at language tasks by learning from vast text
+datasets. Recent advancements, however, have extended these
+models beyond pure linguistic processing to encompass mul-
+timodal ability (In this paper, when we refer to LLMs, we
+specifically mean those that integrate multimodal functions).
+Their ability to capture complex patterns and relationships
+[Chen et al., 2024a] now holds promise for spatial reasoning
+tasks [Ma et al., 2024b]. By applying these enhanced models
+to challenges such as understanding 3D object relationships
+and spatial navigation, we open up new opportunities for ad-
+vancing fields like robotics, computer vision, and augmented
+reality [Gao et al., 2024].
+Information Source
+ Downstream Tasks
+Point clouds
+Multi-view images
+ 
+RGB-D images
+Hybrid modalities
+ 3D Generation
+3D Scene 
+understanding
+3D VQA
+ 
+3D Spatial Reasoning
++ LLMs
+Large language 
+model
+3D spatial reasoning
+  
+Figure 1: Large Language Models can acquire 3D spatial reasoning
+capabilities through various input sources including multi-view im-
+ages, RGB-D images, point clouds, and hybrid modalities, enabling
+the processing and understanding of three-dimensional information.
+At the same time, 3D data and 3D modeling techniques
+have seen significant developments [Ma et al., 2024c], find-
+ing extensive applications in virtual and augmented reality,
+robotics, autonomous vehicles, gaming, medical imaging, and
+more. Unlike traditional two-dimensional images, 3D data
+provides a richer view of objects and environments, capturing
+essential spatial relationships and geometry. Such information
+is critical for tasks like scene reconstruction, object manipu-
+lation, and autonomous navigation, where merely text-based
+descriptions or 2D representations may fall short of conveying
+the necessary depth or spatial context.
+LLMs help Spatial Understanding. Bringing these two fields
+together—powerful language understanding from LLMs and
+the spatial realism of 3D data—offers the potential for highly
+capable, context-aware systems. From a linguistic perspective,
+real-world descriptions often reference physical arrangement,
+orientation, or manipulations of objects in space. Text alone
+can be imprecise or ambiguous about size, shape, or rela-
+tive positioning unless one can integrate a robust spatial or
+visual understanding. Consequently, there is growing inter-
+est in enhancing LLMs with a “3D capacity” that enables
+them to interpret, reason, and even generate three-dimensional
+representations based on natural language prompts. Such an
+integrated approach opens up exciting prospects: robots that
+can follow language instructions more effectively by ground-
+ing their commands in 3D context, architects who quickly
+prototype 3D layouts from textual descriptions, game design-
+arXiv:2504.05786v1  [cs.CV]  8 Apr 2025

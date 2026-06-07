@@ -1,0 +1,4 @@
+Condition,Prep_Entropy,Avg_Sent_Length,Avg_Sent_Variance,Total_Preps,Unique_Preps
+gpt-4o-mini_standard,3.7721572164167587,5.87,5.2725,177,24
+gpt-4o-mini_human_prompt,3.8408629379641845,10.856,8.984,407,33
+gpt-4o_standard,3.418558324777692,7.647666666666001,5.9117944444459996,214,22

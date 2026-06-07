@@ -1,0 +1,26 @@
+\section{Methodology}
+\label{sec:method}
+
+We designed a generative evaluation pipeline to extract and analyze the linguistic features of LLM-generated spatial narratives. Unlike traditional benchmarks that ask a model to "solve" a pathfinding problem, our approach provides the model with the ground-truth layout and the correct path, then asks it to "describe" the journey.
+
+\para{Dataset and Environment}
+We sampled 50 layouts and traversal questions from the \babitask dataset \cite{weston2015towards}. Each layout defines a set of rooms and their topological relationships (e.g., "The kitchen is north of the hallway"). We extracted the optimal path between the start and end points specified in each task.
+
+\para{Models and Prompting Conditions}
+We evaluated two state-of-the-art models from OpenAI: \gpto and \gptom. For each traversal task, we generated narratives under two conditions:
+\begin{itemize}[leftmargin=*,itemsep=0pt,topsep=0pt]
+    \item \standardprompt: "Write a short narrative (3-5 sentences) describing your journey from [start] to [end]."
+    \item \humanprompt: "Write a creative, highly varied, and human-like story (3-5 sentences)... Avoid robotic, formulaic sentence structures."
+\end{itemize}
+These conditions allow us to distinguish between the model's default "learned" spatial grammar and its ability to simulate naturalistic human descriptions when explicitly instructed.
+
+\para{Linguistic Feature Extraction}
+We processed the generated narratives using \textsc{spaCy} and \textsc{NLTK} to extract several key linguistic features:
+\begin{itemize}[leftmargin=*,itemsep=0pt,topsep=0pt]
+    \item {\bf \prepentropy}: We calculated the Shannon entropy of the distribution of spatial prepositions (Adpositions) used in each narrative. Higher entropy indicates a more varied and descriptive spatial vocabulary.
+    \item {\bf \sentvar}: We measured the variance in sentence length (word count) within each narrative. Low variance indicates a repetitive, "robotic" rhythmic structure.
+    \item {\bf POS Bigram Distributions}: We computed the frequency of Part-of-Speech bigrams to identify recurring syntactic structures.
+\end{itemize}
+
+\para{Baseline Comparison}
+Due to the lack of a large-scale, controlled dataset of human-written spatial narratives for these specific layouts, we use the \humanprompt condition as a proxy for the model's "naturalistic" upper bound and compare the \standardprompt outputs against it. We also compare the distributions between \gpto and \gptom to evaluate the impact of model scale.

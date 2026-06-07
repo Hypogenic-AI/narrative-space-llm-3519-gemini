@@ -1,0 +1,19 @@
+\section{Introduction}
+\label{sec:intro}
+
+Large Language Models (LLMs) are increasingly being deployed as agents in physical or simulated environments, from robotics to interactive virtual worlds. In these roles, the ability of a model to not only reason about space but also to articulate its movements and surroundings in natural language is paramount. However, while much research has focused on the success rates of LLMs in solving spatial puzzles and pathfinding tasks \cite{shi2022stepgame, li2024advancing}, the actual linguistic form of their spatial descriptions remains largely unexamined.
+
+{\bf Why does spatial narrative matter?} As we transition from using LLMs as static knowledge retrieval systems to active agents, their "mental models" of the physical world are surfaced through the narratives they generate. If these models default to a robotic, formulaic "spatial grammar," it suggests a fundamental disconnect from the rich, sensory-driven way humans experience and describe space. This disconnect can lead to unnatural human-computer interaction and potentially indicates a limitation in how RLHF-trained models ground abstract concepts in physical reality.
+
+Despite their performance on spatial benchmarks, there is a significant gap in our understanding of the generative biases present in LLM spatial descriptions. Existing work often treats spatial reasoning as a question-answering task \cite{weston2015towards} or probes internal representations for abstract spatial coordinates \cite{martorell2025text}. Yet, we lack a systematic analysis of the *narrative structure* LLMs employ when translating these internal models into text. This "RLHF tone"---the polite but often bland and repetitive style characteristic of instruction-tuned models---may manifest as a rigid topological mapping that lacks the variance and descriptive depth of human narrative.
+
+In this work, we propose a novel generative evaluation framework to analyze the linguistic patterns of spatial traversal in LLMs. Instead of measuring task success, we provide models with environment layouts and optimal paths from the \babitask dataset and ask them to generate short narratives of the journey. We compare default outputs against narratives generated with explicit instructions to be "human-like" and descriptive. We find that default spatial narratives are indeed highly constrained: \gpto exhibited the lowest spatial preposition entropy at 3.41 bits, and sentence length variance remained remarkably low across standard conditions.
+
+Our main contributions are as follows:
+\begin{itemize}[leftmargin=*,itemsep=0pt,topsep=0pt]
+    \item We identify a distinct "spatial grammar" in default LLM outputs, characterized by low vocabulary entropy and rigid sentence structures that prioritize topological relations over sensory detail.
+    \item We quantify the impact of Reinforcement Learning from Human Feedback (RLHF) on spatial narratives, showing that models default to a "robotic" style that can be partially mitigated through explicit "human-like" prompting.
+    \item We provide a statistical analysis of spatial preposition entropy and POS bigram distributions across model sizes and prompting conditions, demonstrating that model scale (\gpto vs \gptom) does not necessarily lead to more naturalistic spatial descriptions by default.
+\end{itemize}
+
+The rest of the paper is organized as follows. \Secref{sec:related} reviews prior work on spatial reasoning in LLMs. \Secref{sec:method} describes our experimental setup and linguistic feature extraction pipeline. \Secref{sec:results} presents our statistical findings, followed by a discussion of the implications in \secref{sec:discussion}. Finally, \secref{sec:conclusion} concludes with directions for future work.

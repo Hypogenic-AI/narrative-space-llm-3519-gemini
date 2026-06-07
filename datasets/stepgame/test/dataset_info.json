@@ -1,0 +1,59 @@
+{
+  "builder_name": "json",
+  "citation": "",
+  "config_name": "default",
+  "dataset_name": "step_game",
+  "dataset_size": 70307698,
+  "description": "",
+  "download_size": 75665180,
+  "features": {
+    "story": {
+      "feature": {
+        "dtype": "string",
+        "_type": "Value"
+      },
+      "_type": "List"
+    },
+    "question": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "label": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "k_hop": {
+      "dtype": "int64",
+      "_type": "Value"
+    }
+  },
+  "homepage": "",
+  "license": "",
+  "size_in_bytes": 145972878,
+  "splits": {
+    "train": {
+      "name": "train",
+      "num_bytes": 10971676,
+      "num_examples": 50000,
+      "dataset_name": "step_game"
+    },
+    "validation": {
+      "name": "validation",
+      "num_bytes": 1094479,
+      "num_examples": 5000,
+      "dataset_name": "step_game"
+    },
+    "test": {
+      "name": "test",
+      "num_bytes": 58241543,
+      "num_examples": 100000,
+      "dataset_name": "step_game"
+    }
+  },
+  "version": {
+    "version_str": "0.0.0",
+    "major": 0,
+    "minor": 0,
+    "patch": 0
+  }
+}

@@ -1,0 +1,464 @@
+You are an academic paper writer. Generate a complete NEURIPS style paper
+based on the experiment results provided.
+
+════════════════════════════════════════════════════════════════════════════════
+                         IMPORTANT: BEFORE YOU START
+════════════════════════════════════════════════════════════════════════════════
+
+Before writing any content, you MUST complete these steps:
+
+1. READ THE SKILL: Review the paper-writer skill at .gemini/skills/paper-writer/SKILL.md
+2. READ THE STYLE GUIDE: Study templates/paper_writing/lab_style_guide.md carefully
+3. REVIEW EXAMPLES: Browse paper_examples/ for formatting and language patterns:
+   - Look at sections/1.introduction.tex for language style
+   - Look at tables/*.tex for table formatting
+   - Look at commands/*.tex for macro usage
+4. VERIFY COMMAND TEMPLATES: Command templates (math.tex, general.tex, macros.tex) are pre-copied to paper_draft/commands/
+
+CRITICAL: Reference example papers for FORMATTING and LANGUAGE STYLE only.
+Do NOT copy content, phrasing, or narrative structure from the example papers.
+The examples are in a different research domain - focus only on presentation style.
+
+════════════════════════════════════════════════════════════════════════════════
+                            EXPERIMENT REPORT
+════════════════════════════════════════════════════════════════════════════════
+
+# Research Report: Narrative Space in LLMs
+
+## 1. Executive Summary
+This research investigates whether Large Language Models (LLMs) exhibit a distinct "spatial grammar" when generating narratives about moving through physical environments, diverging systematically from typical human narrative structure. By prompting OpenAI's models (GPT-4o and GPT-4o-mini) to generate traversal narratives based on layouts from the bAbI dataset, we extracted linguistic features such as spatial preposition entropy, sentence length variance, and Part-of-Speech (POS) bigrams. The findings reveal that LLMs, by default, produce highly formulaic spatial descriptions with constrained vocabulary entropy and rigid, repetitive sentence lengths. However, when explicitly prompted to be "human-like," the models increase both structural variance and spatial vocabulary diversity, confirming that the default "RLHF tone" extends into how physical space is textually represented.
+
+## 2. Research Question & Motivation
+**Research Question:** Do Large Language Models exhibit a distinct and systematic "grammar" or structural pattern when generating narratives about spatial navigation, diverging from typical human narrative structures?
+
+**Motivation:** As LLMs are increasingly deployed as agents in physical or simulated environments (e.g., robotics, video games), their internal conception and external articulation of space become critical. While previous research has evaluated spatial QA capabilities and internal probing (e.g., Martorell et al.), the *generative linguistic patterns* of spatial traversal remain under-explored. If LLMs default to an artificial, robotic spatial grammar, it highlights a limitation in their embodiment and naturalistic storytelling.
+
+## 3. Methodology
+### Approach
+We designed a generative evaluation pipeline. Instead of asking models to solve a maze, we provided them with the layout of a maze and a path to take, asking them to describe the journey. 
+
+### Experimental Setup
+- **Dataset:** We sampled 50 layouts and traversal questions from the **bAbI Task 19** dataset (filtered from HuggingFace).
+- **Models Tested:** `gpt-4o` and `gpt-4o-mini`.
+- **Prompt Conditions:**
+  1. **Standard:** "Write a short narrative (3-5 sentences) describing your journey from [start] to [end]."
+  2. **Human-Prompt:** "Write a creative, highly varied, and human-like story (3-5 sentences)... Avoid robotic, formulaic sentence structures."
+- **Feature Extraction:** We used `spaCy` and `NLTK` to extract POS tags, compute the entropy of spatial prepositions (Adpositions), and measure sentence length and its variance.
+
+## 4. Results
+
+### Statistical Summary
+*(Note: Some queries encountered API rate limits, resulting in a subset of successful narrative generations, but yielding enough tokens for statistical feature extraction).*
+
+| Condition | Spatial Preposition Entropy (bits) | Avg. Sentence Length (words) | Sentence Length Variance | Unique Preps Used |
+| :--- | :--- | :--- | :--- | :--- |
+| `gpt-4o-mini` (Standard) | 3.77 | 5.87 | 5.27 | 24 |
+| `gpt-4o` (Standard) | **3.41** (Lowest) | 7.64 | 5.91 | 22 |
+| `gpt-4o-mini` (Human Prompt) | 3.84 | **10.85** | **8.98** (Highest) | 33 |
+
+### POS Bigram Frequencies (Top 5)
+- **`gpt-4o-mini` (Standard):** (DET, NOUN), (NOUN, PUNCT), (ADP, DET), (PRON, VERB), (NOUN, ADP).
+- **`gpt-4o` (Standard):** (DET, NOUN), (ADP, DET), (NOUN, PUNCT), (NOUN, ADP), (PRON, VERB).
+- **`gpt-4o-mini` (Human Prompt):** (DET, NOUN), (NOUN, PUNCT), (ADP, DET), (NOUN, ADP), **(ADJ, NOUN)**.
+
+### Visualizations
+*(Generated in the `figures/` directory)*
+- **Prep Entropy (`figures/prep_entropy.png`):** Shows the clear dip in vocabulary diversity for the standard `gpt-4o` condition.
+- **Sentence Variance (`figures/sent_variance.png`):** Boxplot indicating that the "human prompt" condition significantly stretches out sentence variance, whereas the standard prompts cluster tightly around 5-7 words per sentence.
+
+## 5. Analysis & Discussion
+The results strongly support the hypothesis:
+1. **Vocabulary Bias (H1):** `gpt-4o` in its standard configuration exhibited the lowest entropy (3.41 bits) and fewest unique prepositions (22). This indicates a strong preference for a highly restricted set of spatial descriptors (e.g., always choosing "into", "through", "past" without variation).
+2. **Structural Rigidity (H2):** The standard models produced very short, uniform sentences (Avg Variance ~5.2 - 5.9). Their top POS bigrams (`PRON, VERB`, `ADP, DET`) reflect a rigid "I walked through the [Room]" structure. 
+3. **The Effect of Prompting:** When prompted to be "human-like," `gpt-4o-mini` increased sentence length variance from 5.27 to 8.98, and uniquely introduced `(ADJ, NOUN)` into its top 5 structural bigrams, showing that default LLM spatial narratives lack descriptive sensory details (adjectives) and favor pure topological mapping.
+
+## 6. Limitations
+- **API Limits:** Rate limits truncated the dataset size, reducing the statistical power of the POS tagging counts.
+- **Proxy Baseline:** The "human-like" prompt was used as a proxy for actual human writing. A more robust comparison would involve a dataset of spatial narratives written by actual humans.
+
+## 7. Conclusions & Next Steps
+Large Language Models exhibit a distinct, default "spatial grammar" characterized by low vocabulary diversity, rigid sentence lengths, and a lack of sensory adjectives. This aligns with findings that RLHF training induces specific linguistic patterns. For future work, we recommend building a dataset of human-written spatial descriptions to serve as a direct baseline, and investigating if Cartesian prompting (as explored by Martorell et al.) exacerbates or mitigates this rigidity.
+
+════════════════════════════════════════════════════════════════════════════════
+                            RESEARCH PLAN
+════════════════════════════════════════════════════════════════════════════════
+
+# Research Plan: Narrative Space in LLMs
+
+## Motivation & Novelty Assessment
+
+### Why This Research Matters
+Understanding how Large Language Models (LLMs) conceptualize and describe spatial environments is critical as these models are increasingly integrated into robotics, virtual environments, and interactive storytelling. If LLMs exhibit a unique, artificial "spatial grammar," it could lead to navigation errors, unnatural human-computer interactions, and a lack of grounding in physical reality.
+
+### Gap in Existing Work
+Current research heavily focuses on evaluating LLMs' spatial reasoning through QA tasks like StepGame and bAbI, or via linear probing of internal representations (e.g., Martorell et al.). However, there is a significant gap in analyzing the *generative* side of spatial reasoning: how LLMs structure narrative text when spontaneously describing movement through a spatial environment, and how this contrasts with human narrative patterns.
+
+### Our Novel Contribution
+This research introduces a novel generative evaluation approach. Instead of asking LLMs to solve spatial puzzles, we prompt them to generate spatial narratives based on given layouts or open-ended navigation tasks. We will analyze these generated narratives for characteristic "LLM spatial grammar" (e.g., predictable sentence structures, over-reliance on specific spatial prepositions, or unnatural transitions), analogous to the recognizable "RLHF tone" found in standard text generation.
+
+### Experiment Justification
+- **Experiment 1 (Spatial Generation from Layouts):** Prompt LLMs to describe a path through a predefined layout (from bAbI Task 19). This is needed to control the ground-truth space and observe how models translate rigid spatial relations into narrative form.
+- **Experiment 2 (Linguistic Feature Analysis):** Analyze the generated texts (part-of-speech tagging, transition words, sentence length variance) to identify the systematic deviations or "grammar" specific to LLM spatial narratives.
+- **Experiment 3 (Cross-Model Comparison):** Compare outputs from different model families (e.g., OpenAI vs Anthropic) to determine if this "spatial grammar" is universal across RLHF models or specific to certain training paradigms.
+
+---
+
+## Research Question
+Do Large Language Models exhibit a distinct and systematic "grammar" or structural pattern when generating narratives about spatial navigation, diverging from typical human narrative structures?
+
+## Background and Motivation
+While LLMs can solve simple multi-hop spatial reasoning tasks (often requiring hybrid symbolic approaches for complex spaces), their generative spatial capabilities remain largely unexamined. Observations of RLHF-trained models suggest they develop characteristic linguistic patterns. We hypothesize that similar artificial constraints exist in their representation of physical space in narrative, which may impact their utility in embodied AI and creative generation.
+
+## Hypothesis Decomposition
+1. **H1 (Vocabulary Bias):** LLMs over-utilize a narrow set of spatial transition phrases (e.g., "proceeded," "navigated," "turned") compared to more varied human descriptions.
+2. **H2 (Structural Rigidity):** LLMs produce spatial narratives with lower sentence structure variance (e.g., repeated Subject-Verb-Direction patterns).
+3. **H3 (Abstract vs Concrete):** LLM narratives prioritize explicit topological relations over sensory/experiential descriptions of space unless explicitly prompted.
+
+## Proposed Methodology
+
+### Approach
+We will utilize layouts from the bAbI Task 19 dataset to provide controlled spatial environments. We will prompt several leading LLMs via API to generate narratives of a character navigating from a start to an end point in these layouts. We will then perform Natural Language Processing (NLP) analysis on the generated texts to extract linguistic features.
+
+### Experimental Steps
+1. **Data Extraction:** Sample 50 distinct environment layouts and pathfinding tasks from the bAbI Task 19 validation/test set.
+2. **Narrative Generation:** Prompt models (e.g., GPT-4o, Claude 3.5 Sonnet) using a standard prompt to write a story about navigating the extracted paths. We will also include a "human-like" prompt to see if the bias can be overridden.
+3. **Linguistic Feature Extraction:** Use NLP tools (NLTK/SpaCy) to analyze the generated texts for:
+   - Frequencies of spatial prepositions and verbs.
+   - Part-of-Speech (POS) n-gram distributions.
+   - Sentence length and structural variance.
+4. **Statistical Analysis:** Compare the feature distributions across models and against a baseline of standard varied text.
+
+### Baselines
+Since we lack a dedicated human spatial narrative dataset, we will use the original bAbI descriptive text as a minimal baseline, and we will compare models against each other. We will also utilize a general text corpus (like Brown corpus or simple Wikipedia sentences) to compute baseline POS variance.
+
+### Evaluation Metrics
+- **Spatial Verb/Preposition Entropy:** Measure of vocabulary diversity in spatial terms.
+- **POS N-gram Divergence:** Jensen-Shannon divergence of POS sequence distributions between models.
+- **Sentence Length Variance:** Standard deviation of sentence lengths.
+- **Path Accuracy:** Did the narrative actually follow the correct path? (Sanity check).
+
+### Statistical Analysis Plan
+- Calculate mean and standard deviation for linguistic features across generated stories.
+- Use ANOVA to test for significant differences in structural variance between different models.
+
+## Expected Outcomes
+We expect to find that LLMs demonstrate lower spatial vocabulary entropy and highly predictable POS sequences when describing movement, confirming the existence of an "LLM spatial grammar."
+
+## Timeline and Milestones
+- **Phase 2 (Setup):** 15 mins. Prepare data from bAbI and set up NLP pipeline.
+- **Phase 3 (Implementation):** 45 mins. Write generation script (API calls) and analysis functions.
+- **Phase 4 (Experimentation):** 30 mins. Run API calls and collect generated narratives.
+- **Phase 5 (Analysis):** 30 mins. Run statistical tests and generate plots.
+- **Phase 6 (Documentation):** 30 mins. Write REPORT.md.
+
+## Potential Challenges
+- **API Limits:** Use batching or smaller sample sizes if rate limits are hit.
+- **Lack of Human Baseline:** Relying on cross-model comparison and general linguistic variance instead of a direct human spatial dataset.
+
+## Success Criteria
+The research will be successful if we can quantitatively identify and describe at least two systematic linguistic patterns present in LLM-generated spatial narratives that indicate a distinct "spatial grammar."
+
+════════════════════════════════════════════════════════════════════════════════
+                          LITERATURE REVIEW
+════════════════════════════════════════════════════════════════════════════════
+
+# Literature Review: Narrative Space in LLMs
+
+## Research Area Overview
+The study of spatial navigation and narrative space in Large Language Models (LLMs) focuses on whether these models develop abstract "mental maps" or "world models" from their textual training data, or if they rely on surface-level pattern matching. Current research explores various spatial information representations (SIRs), multi-hop reasoning, and the internal activation of models during navigation tasks.
+
+## Key Papers
+
+### 1. From Text to Space: Mapping Abstract Spatial Models in LLMs (2025)
+- **Authors**: Martorell et al.
+- **Key Contribution**: Investigates the influence of different text-based spatial representations (Cartesian, Topographic, Textual) on LLM navigation performance.
+- **Methodology**: Evaluates models on a grid-world navigation task (GWSOT) and uses linear probing to identify internal units correlating with spatial features.
+- **Findings**: Cartesian representations consistently yield the highest success rates. Identified specific internal units in intermediate layers of LLaMA-3.1-8B that represent agent position abstractly.
+- **Relevance**: Directly supports the hypothesis that LLMs develop internal spatial models and that the *form* of the narrative (representation) matters.
+
+### 2. Advancing Spatial Reasoning in LLMs: An In-Depth Evaluation and Enhancement (2024)
+- **Authors**: Li et al.
+- **Key Contribution**: Rectifies errors in the StepGame benchmark and proposes a hybrid reasoning solution.
+- **Methodology**: Combines LLM-based mapping (sentence to relation) with logic-based reasoning (ASP/Clingo).
+- **Findings**: Pure LLMs struggle with multi-hop spatial reasoning as the number of "hops" increases. Hybrid systems achieve near-perfect performance.
+- **Relevance**: Highlights the limitations of LLMs in complex spatial reasoning and provides a "rectified" baseline.
+
+### 3. StepGame: A New Benchmark for Robust Multi-Hop Spatial Reasoning in Texts (2022)
+- **Authors**: Shi et al.
+- **Key Contribution**: Introduced the StepGame benchmark specifically for multi-hop spatial reasoning.
+- **Methodology**: Synthetic stories with varying "hops" and noise levels.
+- **Relevance**: foundational dataset for testing textual spatial reasoning.
+
+### 4. A Survey of Spatial Reasoning in LLM (2025)
+- **Authors**: Zha et al.
+- **Key Contribution**: Comprehensive taxonomy of spatial reasoning in LLMs across 2D, 3D, and hybrid modalities.
+- **Relevance**: Provides a broad context of the current state-of-the-art.
+
+## Common Methodologies
+- **Synthetic Tasks**: Using grid-worlds (Martorell) or toy stories (bAbI, StepGame) to control complexity.
+- **Linear Probing**: Training simple classifiers on model activations to find "spatial neurons" (Martorell).
+- **Hybrid Systems**: Combining LLMs with symbolic reasoners (Li et al.).
+- **Representation Comparison**: Testing Cartesian vs. Topographic vs. Natural Language formats.
+
+## Standard Baselines
+- **bAbI Task 19 (Path Finding)**: Early benchmark for reasoning.
+- **StepGame**: Standard for multi-hop reasoning (1-10 hops).
+- **Zero-shot/Few-shot CoT**: Standard LLM evaluation strategy.
+
+## Evaluation Metrics
+- **Success Rate**: Frequency of reaching the goal.
+- **Path Efficiency**: Ratio of actual path length to optimal path length.
+- **Accuracy**: For QA-based spatial tasks.
+- **Probing Accuracy**: How well internal states map to ground truth spatial features.
+
+## Gaps and Opportunities
+- **Divergence from Human Patterns**: While models are tested on success, the *style* and *grammar* of their generated spatial narratives compared to humans remains under-explored.
+- **Abstract vs. Concrete**: Most benchmarks use very concrete "Agent A is left of B". Real narratives are more abstract.
+- **Dynamic Environments**: Reasoning about moving objects or changing layouts.
+
+## Recommendations for Our Experiment
+- **Dataset**: Use **StepGame (Rectified)** and **bAbI Task 19** as baselines.
+- **Task**: Compare LLM-generated navigation stories with human-written ones (or templated ones) to identify "spatial grammar" differences.
+- **Methodology**: Apply Martorell's probing approach if possible to see if "spatial units" are activated differently during "hallucinated" vs. "consistent" navigation.
+- **Representation**: Explicitly test if providing a "Cartesian scratchpad" improves narrative consistency.
+
+
+════════════════════════════════════════════════════════════════════════════════
+                          PAPER REQUIREMENTS
+════════════════════════════════════════════════════════════════════════════════
+
+Generate a complete academic paper with the following structure:
+
+1. TITLE
+   - Clear, specific, informative
+   - Should convey main finding or contribution
+
+2. AUTHOR
+   - Use this exact author line in the \author{} block: Ari Holtzman and NeuriCo
+
+3. ABSTRACT (150-250 words)
+   - Problem statement
+   - Approach
+   - Key results
+   - Significance
+
+4. INTRODUCTION
+   - Research problem and motivation
+   - Gap in existing work
+   - Our contribution (be specific)
+   - Paper organization
+
+5. RELATED WORK
+   - Organized by theme/approach
+   - Position our work relative to prior work
+   - Cite papers from literature review
+
+6. METHODOLOGY
+   - Clear description of approach
+   - Experimental setup
+   - Datasets used
+   - Evaluation metrics
+   - Baselines
+
+7. RESULTS
+   - Present results with tables and figures
+   - Statistical analysis
+   - Comparison to baselines
+   - Ablation studies (if applicable)
+
+8. DISCUSSION
+   - Interpretation of results
+   - Limitations
+   - Broader implications
+
+9. CONCLUSION
+   - Summary of contributions
+   - Key findings
+   - Future work
+
+10. REFERENCES
+   - BibTeX format
+   - All cited papers
+
+════════════════════════════════════════════════════════════════════════════════
+                          OUTPUT FORMAT
+════════════════════════════════════════════════════════════════════════════════
+
+Create a MODULAR LaTeX project with the following directory structure:
+
+paper_draft/
+├── main.tex              # Main file that imports all sections
+├── references.bib        # BibTeX references
+├── sections/
+│   ├── abstract.tex      # Abstract content
+│   ├── introduction.tex  # Introduction section
+│   ├── related_work.tex  # Related work section
+│   ├── methodology.tex   # Methodology section
+│   ├── results.tex       # Results section
+│   ├── discussion.tex    # Discussion section
+│   └── conclusion.tex    # Conclusion section
+├── figures/              # Directory for any generated figures
+├── tables/               # Directory for complex standalone tables
+└── appendix/             # Directory for appendix sections (if needed)
+
+INSTRUCTIONS:
+1. First, create the directory structure above (mkdir -p paper_draft/sections paper_draft/figures paper_draft/tables paper_draft/appendix)
+2. Write main.tex using the EXACT preamble for NEURIPS:
+
+   \documentclass{article}
+   \usepackage[final]{neurips_2025}  % NEURIPS style (neurips_2025.sty is in paper_draft/)
+   \usepackage[hidelinks]{hyperref}  % REQUIRED: clickable links
+   \usepackage{booktabs}  % REQUIRED: professional tables
+   \usepackage{graphicx}
+   \usepackage{amsmath,amssymb}
+
+   % Import command files
+   \input{commands/math}
+   \input{commands/general}
+   \input{commands/macros}
+
+   % Use this bibliography style:
+   \bibliographystyle{plainnat}
+
+   \author{Ari Holtzman and NeuriCo}
+
+   - Use \input{sections/...} to include each section
+   - Use \bibliography{references} for references
+3. Write each section file with COMPLETE content (no placeholders)
+4. Each section file should include its \section{} command
+5. Write references.bib with all citations in BibTeX format
+6. After writing all files, compile the paper:
+   cd paper_draft && pdflatex -interaction=nonstopmode main.tex && bibtex main && pdflatex -interaction=nonstopmode main.tex && pdflatex -interaction=nonstopmode main.tex
+
+This modular structure allows humans to easily:
+- Edit individual sections without navigating a large file
+- Track changes per section
+- Reuse sections across different paper versions
+
+════════════════════════════════════════════════════════════════════════════════
+                          QUALITY REQUIREMENTS
+════════════════════════════════════════════════════════════════════════════════
+
+- Academic tone throughout
+- All claims must be supported by data from the experiment report
+- Proper citations using \cite{} commands
+- Clear figures and tables with proper captions
+- NO placeholder text - every section must have real content
+- The paper MUST compile without errors
+- If compilation fails, debug and fix the LaTeX errors
+
+════════════════════════════════════════════════════════════════════════════════
+                          LAB WRITING STYLE
+════════════════════════════════════════════════════════════════════════════════
+
+Follow these lab-specific conventions to match our paper style:
+
+1. LANGUAGE STYLE:
+   - Use active voice: "We propose", "We examine", "We focus on"
+   - Be direct and confident: "Our main question is...", "We hypothesize that..."
+   - State things clearly and simply - prefer plain language over jargon
+   - Use bold questions as paragraph organizers: {\bf what is X?}
+   - Include specific quantitative claims: "8.97% over baseline"
+   - Avoid fancy wording: "utilize" → "use", "facilitate" → "help"
+
+2. INTRODUCTION STRUCTURE:
+   - Engaging hook (get to the point quickly)
+   - Problem importance
+   - Gap identification
+   - Your approach with method figure reference
+   - Quantitative preview of results
+   - Contribution bullets (3-4 items, action verbs)
+
+3. CONTRIBUTION LISTS:
+   \begin{itemize}[leftmargin=*,itemsep=0pt,topsep=0pt]
+       \item We propose...
+       \item We conduct...
+       \item We complement...
+   \end{itemize}
+
+4. MODULAR COMMANDS STRUCTURE:
+   Command templates are pre-copied to paper_draft/commands/:
+   - math.tex: Math notation macros
+   - general.tex: Formatting macros
+   - macros.tex: Project-specific term definitions (customize this for your paper)
+
+   In main.tex, include:
+   \input{commands/math}
+   \input{commands/general}
+   \input{commands/macros}
+
+5. REFERENCE CONVENTIONS:
+   Use reference macros from math.tex:
+   - \figref{fig:name} for "figure 1" (lowercase, in-sentence)
+   - \Figref{fig:name} for "Figure 1" (capitalized, start of sentence)
+   - \secref{sec:name} for "section 2"
+
+6. TEXT FORMATTING:
+   - Use \para{Header text} for bold paragraph headers
+   - Define method/dataset names with \textsc and \xspace:
+     \newcommand{\methodname}{\textsc{MethodName}\xspace}
+
+7. TABLE FORMATTING:
+   - Use booktabs package (no vertical lines)
+   - Use \resizebox{\textwidth}{!}{...} for wide tables
+   - Use @{} to remove padding at table edges
+   - Use \cmidrule(lr){x-y} for sub-headers
+   - Use \textsc{} for dataset/method names in headers
+   - Bold best results with {\bf ...}
+
+8. FIGURE FORMATTING:
+   - Use 0.32\textwidth for 3-column subfigures
+   - Use 0.95\linewidth for full-width figures
+   - Use \input{figures/legend} for shared legends
+   - Write self-contained captions explaining key observations
+
+9. RESULTS PRESENTATION:
+   - Define \increase and \decrease for colored arrows (green up, red down)
+   - Bold best results in tables
+   - Report confidence intervals when available
+
+10. ALGORITHM STYLING:
+    - Use algpseudocode with [noend]
+    - Use \triangleright for comments
+
+11. HYPERLINKS (REQUIRED):
+    - Always use \usepackage[hidelinks]{hyperref} or with colored links
+    - All citations, section refs, figure refs, table refs must be clickable
+    - This is essential for reader navigation
+
+════════════════════════════════════════════════════════════════════════════════
+                          WORKFLOW: REVIEW AND REFLECT
+════════════════════════════════════════════════════════════════════════════════
+
+Before calling finish, you MUST complete these review steps:
+
+1. REVIEW RESOURCES (at the start):
+   - Read .gemini/skills/paper-writer/SKILL.md for detailed guidance
+   - Study templates/paper_writing/lab_style_guide.md for style conventions
+   - Browse paper_examples/ for formatting and language patterns
+
+2. SELF-REFLECTION (before finishing):
+   After writing all sections, review your work against these criteria:
+
+   LANGUAGE CHECK:
+   - [ ] Is the writing clear and jargon-free?
+   - [ ] Are claims specific with quantitative support?
+   - [ ] Is active voice used throughout?
+
+   FORMATTING CHECK:
+   - [ ] Does main.tex include \input{commands/math}, \input{commands/general}, \input{commands/macros}?
+   - [ ] Is hyperref package included for clickable references?
+   - [ ] Do tables use booktabs (no vertical lines)?
+   - [ ] Are best results bolded in tables?
+   - [ ] Are figures/tables properly captioned?
+
+   STRUCTURE CHECK:
+   - [ ] Does introduction follow: hook → importance → gap → approach → preview → contributions?
+   - [ ] Are contribution bullets specific with action verbs?
+   - [ ] Does the paper compile without errors?
+
+3. FIX ISSUES:
+   - Address any issues found in the self-reflection
+   - Re-compile and verify the PDF looks correct
+
+Only after completing this review should you consider the paper finished.

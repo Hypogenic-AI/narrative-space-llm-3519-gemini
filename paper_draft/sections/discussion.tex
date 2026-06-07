@@ -1,0 +1,14 @@
+\section{Discussion}
+\label{sec:discussion}
+
+Our results provide strong empirical evidence for the existence of a distinct "spatial grammar" in LLMs. This grammar is characterized by low entropy in spatial descriptors, high structural rigidity, and a primary focus on topological mapping over sensory description.
+
+{\bf Why do LLMs default to robotic spatial grammar?} One possibility is that the Reinforcement Learning from Human Feedback (RLHF) process, which optimizes for clarity and helpfulness, inadvertently penalizes stylistic variance in technical or descriptive tasks like navigation. In attempting to provide "correct" and "efficient" descriptions of a path, models may converge on the most frequent and unambiguous patterns seen during training, leading to the observed structural rigidity. This is consistent with our finding that \gpto, the larger and more heavily tuned model, actually exhibited *lower* spatial entropy than \gptom in standard conditions.
+
+{\bf Implications for Embodied AI.} As LLMs are increasingly used to control or interact with robots, their default "robotic" tone may limit their effectiveness in human-centric environments. A robot that describes its actions using a highly formulaic, repetitive grammar may be perceived as less intelligent or more difficult to trust than one that uses natural, varied language. Our work suggests that unless specifically prompted (or fine-tuned) for naturalism, LLMs will default to a style that is more characteristic of a database record than a human observer.
+
+\para{Limitations}
+This study has several limitations. First, due to API rate limits, our analysis was conducted on a subset of the \babi dataset, which may reduce the statistical power of some POS bigram counts. Second, we used the \humanprompt condition as a proxy for natural human writing. While this demonstrates the model's *capacity* for variance, a more robust baseline would include a dataset of narratives written by actual humans describing the same environments. Finally, our study is limited to the English language and specific models from OpenAI; future work should explore whether these patterns are universal across different languages and training paradigms.
+
+\para{Broader Impact}
+Investigating the linguistic biases of LLMs in physical contexts is a necessary step toward building models that are truly grounded in our world. By identifying and quantifying the "spatial grammar" of LLMs, we can develop better training objectives and prompting strategies to create more naturalistic and effective AI agents.

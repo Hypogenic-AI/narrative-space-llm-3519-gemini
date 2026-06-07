@@ -1,0 +1,61 @@
+SceneX : Procedural Controllable Large-scale Scene Generation
+Mengqi Zhou1,3,4,6*, Yuxi Wang2*, Jun Hou2, Shougao Zhang8,
+Yiwei Li1, Chuanchen Luo5, Junran Peng7†, Zhaoxiang Zhang1,2,3,4,6
+1University of Chinese Academy of Sciences (UCAS), 2Centre for Artificial Intelligence and Robotics (CAIR)
+3Institute of Automation, Chinese Academy of Sciences (CASIA), 4New Laboratory of Pattern Recognition (NLPR)
+5Shandong University, 6State Key Laboratory of Multimodal Artificial Intelligence Systems (MAIS)
+7University of Science and Technology Beijing, 8China University of Geosciences Beijing
+{zhoumengqi2022, zhaoxiang.zhang }@ia.ac.cn,yuxiwang93@gmail.com,jrpeng4ever@126.com
+• Effortlessly integrate user PCG and assets 
+• Simple formatting and packaging
+• Smooth workflows
+• 500+ procedural modules
+• 10,000+ high-quality assets
+PCGPlanner PCGHub：Various PCG Modules and Assets
+User descriptions: Generate beautiful cherry blossoms/ Generate a modern city/ Generate a fall forest/ Generate the noonday woods.
+...
+Scene Decomposition
+Objects Generation & Retrieval
+Assets Placement
+Scene Generate
+Terrain Generation
+Figure 1: The proposed Scene X can create large-scale 3D natural scenes or unbounded cities automatically according to user
+instructions. The generated models are characterized by delicate geometric structures, realistic material textures, and natural
+lighting, allowing for seamless deployment in the industrial pipeline.
+Abstract
+Developing comprehensive explicit world models is crucial
+for understanding and simulating real-world scenarios. Re-
+cently, Procedural Controllable Generation (PCG) has gained
+significant attention in large-scale scene generation by en-
+abling the creation of scalable, high-quality assets. However,
+PCG faces challenges such as limited modular diversity, high
+expertise requirements, and challenges in managing the di-
+verse elements and structures in complex scenes. In this pa-
+per, we introduce a large-scale scene generation framework,
+SceneX , which can automatically produce high-quality pro-
+cedural models according to designers’ textual descriptions.
+Specifically, the proposed method comprises two compo-
+nents, PCGHub and PCGPlanner. The former encompasses
+an extensive collection of accessible procedural assets and
+thousands of hand-craft API documents to perform as a stan-
+*Equal contribution
+†
+Corresponding author
+dard protocol for PCG controller. The latter aims to generate
+executable actions for Blender to produce controllable and
+precise 3D assets guided by the user’s instructions. Exten-
+sive experiments demonstrated the capability of our method
+in controllable large-scale scene generation, including nature
+scenes and unbounded cities, as well as scene editing such
+as asset placement and season translation. Our project page:
+https://zhouzq1.github.io/SceneX/.
+Introduction
+In the realm of Artificial General Intelligence (AGI), de-
+veloping comprehensive world models is crucial for under-
+standing and simulating real-world scenarios(Zhang et al.
+2024d; Huang et al. 2024). Recent advancements, such as
+those demonstrated by the Sora model (Brooks et al. 2024),
+show progress in capturing physical laws and generating re-
+alistic simulations. However, Sora’s outputs often lack de-
+tailed geometry and structured information, limiting their
+arXiv:2403.15698v3  [cs.CV]  17 Dec 2024
